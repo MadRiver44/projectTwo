@@ -1,24 +1,29 @@
 import React, { Component } from 'react';
 
 class TrailList extends Component {
-/*  constructor(props){
+ constructor(props){
     super(props);
-  }*/
+  }
   render() {
-    let trailList = this.props.trails.map((trail,i) => {
+ /*   let trailList = this.props.trails.map((trail,i) => {
       //console.log(trail); //trail is obj with trailName and FBkey, trail.key id just FB key
       return (
         <li key={trail.key} onClick={this.props.getTrailInfo}>{trail.trailName}</li>
         )
       });
+*/
 
+console.log(this.props);
     return (
 
-      <ul>
-        {trailList}
-      </ul>
+        null
 
       )
   }
 }
 export default TrailList;
+/*
+      <ul>
+        {trailList}
+      </ul>
+*/

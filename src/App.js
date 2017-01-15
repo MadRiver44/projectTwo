@@ -6,7 +6,7 @@ import axios from 'axios';
 import Header from './components/Header';
 import TrailList from './components/TrailList';
 import AddATrail from './components/AddATrail';
-import Review from './components/Review';
+//import Review from './components/Review';
 import logo from './logo.svg';
 import './App.css';
 
@@ -14,7 +14,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      trails: [], // array of trails by firebase key
+      trails: {},// move from arr to [] {} // array of trails by firebase key
       bool: true ,// conditon for patch request to edit
       trailName: '',
       description: '',
@@ -27,19 +27,25 @@ class App extends Component {
 
 
     // why bind? and what gets bound?
-    this.handleChange = this.handleChange.bind(this);
+    this.handleTrailChange = this.handleTrailChange.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
   }
+
 
   handleSubmit(event) {
     event.preventDefault();
     this.postRequest();
   }
 
-  handleChange(event) {
-    this.setState({ trailName: event.target.value})
+  handleTrailChange(event) {
+    this.setState( {trailName: event.target.value} )
 
+  }
+
+  handleLocationChange(event){
+    this.setState( {location: event.target.value} )
   }
 
   componentDidMount() { // on page load render all trails
@@ -47,10 +53,19 @@ class App extends Component {
   };
 
   getRequest() {
-    axios.get('https://ski-trail-review.firebaseio.com/trails/.json')
-    .then((res) => {
-      console.log(res.data);
+    axios({
+      url: '/trails.json',
+      baseURL: 'https://ski-trail-review.firebaseio.com/',
+      method: "GET"
+  }).then((res) => {
+      this.setState( {trails: res.data} )
+      //console.log(this.state.trails);
+
+  })
+/*    .then((res) => {
+      // console.log(res.data);
       const data = res.data
+      console.log(res)
       let trails = [];
        if(data) {
         trails = Object.keys(data).map((id) => {
@@ -61,32 +76,93 @@ class App extends Component {
           }
         });
        }
-       trails.reverse();
-       this.setState( {trails} )
-    })
+      // trails.reverse();
+
+       this.setState( {trails} )*/
+
     .catch((error) => {
       console.log(error)
     })
   }
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/*  getTodos() {
+    axios({
+      url: '/todos.json',
+      baseURL: 'https://todo-app-f7821.firebaseio.com/',
+      method: "GET"
+    }).then((response) => {
+     // console.log(response.data)
+      this.setState({ todos: response.data });
+      console.log(this.state.todos)
+    }).catch((error) => {
+      console.log(error);
+    });
+  }*/
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   postRequest() {
-    axios.post('https://ski-trail-review.firebaseio.com/trails/.json',{
+    // new
+    let newTrail = {
       trailName: this.state.trailName,
+      location: this.state.location,
+      reviews: [{user: '',review:''} ],
+    };
+    console.log(newTrail)
+    //new
+
+    axios({
+      url:'/trails.json',
+      baseURL: 'https://ski-trail-review.firebaseio.com/',
+      method: "POST",
+      data: newTrail
+    })
+
+/*      trailName: this.state.trailName,
       reviews: this.state.review,
       location: this.state.location,
       description: this.state.description
-    })
-    .then(() =>{
-      this.setState( {trailName: ''});
+*/
+
+    .then((res) => {
+      let trails = this.state.trails;
+      let newTrail_Id = res.data.name;
+      trails[newTrail_Id] = newTrail;
+      //console.log(newTrail_Id)
+      this.setState( {trails: trails});
       this.getRequest()
 
     }).catch((error) => {
       console.log(error);
     })
   }
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/*    createTodo(todoText) {
+    let newTodo = { title: todoText, createdAt: new Date() };
+
+    axios({
+      url: '/todos.json',
+      baseURL: 'https://todo-app-f7821.firebaseio.com/',
+      method: "POST",
+      data: newTodo
+    }).then((response) => {
+      let todos = this.state.todos;
+      let newTodoId = response.data.name;
+      todos[newTodoId] = newTodo;
+      this.setState({ todos: todos });
+    }).catch((error) => {
+      console.log(error);
+    });
+  }*/
 
 
-getTrailInfo(event) {
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/*getTrailInfo(event) {
   const id = event.target.id;
   //console.log(id)
   const selectedTrail = this.state.trailList.filter((trail) => {
@@ -96,7 +172,7 @@ getTrailInfo(event) {
   this.setState( {selectedTrail: id} )
   this.setState( {review: selectedTrail.review } )
 
-}
+}*/
 
 
   render() {
@@ -108,14 +184,16 @@ getTrailInfo(event) {
         </div>
         <Header />
         <AddATrail
-          inputValue={this.state.trailName}
-          handleChange={this.handleChange}
+          inputTrialName={this.state.trailName}
+          handleTrailChange={this.handleTrailChange}
+          handleLocationChange={this.handleLocationChange}
+          inputLocation={this.state.trails.location}
           handleSubmit={this.handleSubmit}
 
           onClick={this.getTrailInfo}
           />
-        <TrailList  trails={this.state.trails} onClick={this.getTrailInfo}/>
-        <Review onClick={this.getTrailInfo} selectedTrail={this.state.selectedTrail} />
+         <TrailList  trails={this.state.trails} onClick={this.getTrailInfo}/>
+
 
 
 
@@ -129,4 +207,5 @@ getTrailInfo(event) {
 export default App;
 
 
+//  <Review onClick={this.getTrailInfo} selectedTrail={this.state.selectedTrail} />
 
