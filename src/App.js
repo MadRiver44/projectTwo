@@ -145,8 +145,8 @@ class App extends Component {
   selectTrail(itemId) {
     this.setState( {selectedTrail: itemId} )
     //console.log( this.selectTrail)
-    console.log(itemId);
-    console.log(this.state.selectedTrail)
+    //console.log(itemId);
+    //console.log(this.state.selectedTrail)
   }
 
   addAReview() {
@@ -159,6 +159,7 @@ class App extends Component {
       content = (
         <div>
           <h3>Enter a Review</h3>
+          <h5>{selectedTrail.trailName} {selectedTrail.location}</h5>
           <form type="textarea" placeholder="Enter a Review">
             <input type="textarea"/>
             <input type="submit" value="Send it"/>
