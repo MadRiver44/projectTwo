@@ -23,6 +23,7 @@ class App extends Component {
       reviews:[],
       review: '',
       value: '',
+      trailsArray: []
     }
 
 
@@ -30,6 +31,7 @@ class App extends Component {
     this.handleTrailChange = this.handleTrailChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.deleteAnItem =this.deleteAnItem.bind(this);
 
   }
 
@@ -59,50 +61,34 @@ class App extends Component {
       method: "GET"
   }).then((res) => {
       this.setState( {trails: res.data} )
-      //console.log(this.state.trails);
-
-  })
-/*    .then((res) => {
-      // console.log(res.data);
-      const data = res.data
-      console.log(res)
+      // console.log(res.data); // data property Object {FbkeyId :{reviews:[{user:'',review:''}], location: '', trailName: ''}
+      const trailsData = res.data;
+      this.setState( {trails: res.data} )
+      // console.log( this.state.trails );
       let trails = [];
-       if(data) {
-        trails = Object.keys(data).map((id) => {
-          const trail = data[id];
+        trails = Object.keys(trailsData).map((id) => {
+          const trail = trailsData[id];
+          //console.log(id)
+          console.log(trail)
           return {
             trailName: trail.trailName,
-            key: id
+            location: trail.location,
+            reviews: trail.reviews,
+            key: id,
           }
-        });
-       }
-      // trails.reverse();
+      });
 
-       this.setState( {trails} )*/
+        //console.log(trails);
+        trails.reverse()
+        this.setState( {trailsArray: trails} );
+        //console.log(this.state.trailsArray)
 
-    .catch((error) => {
-      console.log(error)
-    })
-  }
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/*  getTodos() {
-    axios({
-      url: '/todos.json',
-      baseURL: 'https://todo-app-f7821.firebaseio.com/',
-      method: "GET"
-    }).then((response) => {
-     // console.log(response.data)
-      this.setState({ todos: response.data });
-      console.log(this.state.todos)
     }).catch((error) => {
-      console.log(error);
-    });
-  }*/
+    console.log(error);
+  });
+}
 
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   postRequest() {
     // new
@@ -120,13 +106,6 @@ class App extends Component {
       method: "POST",
       data: newTrail
     })
-
-/*      trailName: this.state.trailName,
-      reviews: this.state.review,
-      location: this.state.location,
-      description: this.state.description
-*/
-
     .then((res) => {
       let trails = this.state.trails;
       let newTrail_Id = res.data.name;
@@ -134,33 +113,30 @@ class App extends Component {
       //console.log(newTrail_Id)
       this.setState( {trails: trails});
       this.getRequest()
-
-    }).catch((error) => {
-      console.log(error);
+    })
+      .catch((error) => {
+        console.log(error);
     })
   }
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*    createTodo(todoText) {
-    let newTodo = { title: todoText, createdAt: new Date() };
-
+  deleteAnItem(itemId) {
+    console.log(itemId);
     axios({
-      url: '/todos.json',
-      baseURL: 'https://todo-app-f7821.firebaseio.com/',
-      method: "POST",
-      data: newTodo
-    }).then((response) => {
-      let todos = this.state.todos;
-      let newTodoId = response.data.name;
-      todos[newTodoId] = newTodo;
-      this.setState({ todos: todos });
-    }).catch((error) => {
-      console.log(error);
-    });
-  }*/
+      url: `/trails/${itemId}.json`,
+      baseURL: 'https://ski-trail-review.firebaseio.com/',
+      method: 'DELETE'
+    })
+      .then((res) => {
+        let trails = this.state.trails;
+        delete trails[itemId]
+        this.setState( {trails} )
+        console.log(res)
+      })
+        .catch((error) => {
+          console.log(error);
+        })
+  }
 
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /*getTrailInfo(event) {
   const id = event.target.id;
@@ -192,7 +168,7 @@ class App extends Component {
 
           onClick={this.getTrailInfo}
           />
-         <TrailList  trails={this.state.trails} onClick={this.getTrailInfo}/>
+         <TrailList  trailsArray={this.state.trailsArray} onClick={this.getTrailInfo} deleteAnItem={this.deleteAnItem}/>
 
 
 

@@ -3,27 +3,27 @@ import React, { Component } from 'react';
 class TrailList extends Component {
  constructor(props){
     super(props);
+
   }
   render() {
- /*   let trailList = this.props.trails.map((trail,i) => {
-      //console.log(trail); //trail is obj with trailName and FBkey, trail.key id just FB key
+    let  renderedTrailArray = this.props.trailsArray.map((trail,i) => {
+      console.log(trail); //trail is obj with trailName and FBkey, trail.key id just FB key
       return (
-        <li key={trail.key} onClick={this.props.getTrailInfo}>{trail.trailName}</li>
+        <div>
+          <li key={trail.key} onClick={this.props.getTrailInfo}>{trail.trailName} {trail.location}
+          <button onClick={this.props.deleteAnItem(trail.key)}>
+           <span aria-hidden="true">&times;</span></button>
+          </li>
+        </div>
         )
       });
-*/
-
-console.log(this.props);
+//console.log(trail.key)
     return (
-
-        null
-
+      <ul>
+        {renderedTrailArray}
+      </ul>
       )
   }
 }
 export default TrailList;
-/*
-      <ul>
-        {trailList}
-      </ul>
-*/
+
