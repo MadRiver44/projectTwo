@@ -31,7 +31,7 @@ class App extends Component {
     this.handleTrailChange = this.handleTrailChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.deleteAnItem =this.deleteAnItem.bind(this);
+    this.deleteAnItem = this.deleteAnItem.bind(this);
 
   }
 
@@ -69,13 +69,14 @@ class App extends Component {
         trails = Object.keys(trailsData).map((id) => {
           const trail = trailsData[id];
           //console.log(id)
-          console.log(trail)
+          //console.log(trail)
           return {
             trailName: trail.trailName,
             location: trail.location,
             reviews: trail.reviews,
             key: id,
           }
+
       });
 
         //console.log(trails);
@@ -97,7 +98,7 @@ class App extends Component {
       location: this.state.location,
       reviews: [{user: '',review:''} ],
     };
-    console.log(newTrail)
+    //console.log(newTrail)
     //new
 
     axios({
@@ -128,9 +129,10 @@ class App extends Component {
     })
       .then((res) => {
         let trails = this.state.trails;
+      //  console.log(trails);
         delete trails[itemId]
         this.setState( {trails} )
-        console.log(res)
+       // console.log(res)
       })
         .catch((error) => {
           console.log(error);
@@ -163,6 +165,7 @@ class App extends Component {
           inputTrialName={this.state.trailName}
           handleTrailChange={this.handleTrailChange}
           handleLocationChange={this.handleLocationChange}
+          deleteAnItem={this.deleteAnItem}
           inputLocation={this.state.trails.location}
           handleSubmit={this.handleSubmit}
 

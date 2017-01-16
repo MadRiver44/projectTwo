@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
 class AddATrail extends Component{
-  constructor(props){
+/*  constructor(props){
     super(props);
 
-  }
+  }*/
 
 
   render(){
