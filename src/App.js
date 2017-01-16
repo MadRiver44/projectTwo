@@ -22,7 +22,7 @@ class App extends Component {
       selectedTrail: '',
       reviews:[],
       review: '',
-      value: '',
+      userName: '',
       trailsArray: []
     }
 
@@ -34,6 +34,8 @@ class App extends Component {
     this.deleteAnItem = this.deleteAnItem.bind(this);
     this.addAReview = this.addAReview.bind(this);
     this.selectTrail = this.selectTrail.bind(this);
+    this.handleUserChange =this.handleUserChange.bind(this);
+    this.handleReviewSubmit = this.handleReviewSubmit.bind(this);
 
   }
 
@@ -122,6 +124,8 @@ class App extends Component {
     })
   }
 
+
+
   deleteAnItem(itemId) {
     console.log(itemId);
     axios({
@@ -147,47 +151,78 @@ class App extends Component {
     //console.log( this.selectTrail)
     //console.log(itemId);
     //console.log(this.state.selectedTrail)
+    return this.state.selectedTrail;
+  }
+
+  handleReviewSubmit(event) {
+    event.preventDefault();
+    this.postReview();
+
+  }
+
+  handleReviewChange(event) {
+    console.log(event)
+    this.setState( {review: event.target.value} )
+  }
+
+  handleUserChange(event) {
+    this.setState( {userName: event.target.value} )
   }
 
   addAReview() {
     let content;
-
     if(this.state.selectedTrail) {
       //console.log(this.state.selectedTrail)
       let selectedTrail = this.state.trails[this.state.selectedTrail];
+
       console.log(selectedTrail);
       content = (
         <div>
             <h3>Enter a Review</h3>
             <h5>{selectedTrail.trailName} {selectedTrail.location}</h5>
 
-            <form>
+            <form onSubmit={this.handleReviewSubmit}>
               <div className="form-group">
-                {/* <label for="userName">User Name</label> */}
-                <input type="text" id="userName" name="username" className="form-control" placeholder="user name"/>
+                <input type="text" onChange={this.handleUserChange}
+                  value={this.state.userName}
+                  id="userName" name="username"
+                  className="form-control"
+                  placeholder="user name"/>
               </div>
              <div className="form-group">
-                {/*<label for="review">Review</label> */}
-                <textarea id="review" name="userReview" className="form-control" rows="3" placeholder="review"/>
+                <textarea onChange={this.handleReviewChange}
+                value={this.state.review}
+                id="review" name="userReview"
+                className="form-control"
+                rows="3"
+                placeholder="review"/>
              </div>
-             <input type="submit" value="Send it"/>
+             <input type="submit" onClick={this.postReview} value="Send it"/>
             </form>
-{/*            <h3>Enter a Review</h3>
-            <h5>{selectedTrail.trailName} {selectedTrail.location}</h5>
-            <form type="textarea" placeholder="Enter a Review">
-              <textarea type="textarea"/>
-              <input type="text" placeholder="Enter a Username"/>
-              <input type="submit" value="Send it"/>
-            </form>*/}
-
-
-        </div>
+         </div>
         )
     }
     return content;
   }
 
+  postReview() {
+    let review = {
+      review: this.state.review,
+      userName: this.state.userName
+    };
+    let key = this.state.selectedTrail;
+    axios({
+      url: `/${key}/reviews/json`,
+      baseURL: 'https://ski-trail-review.firebaseio.com/',
+      data: review,
+    }).then((res) => {
+      //do something
 
+      console.log(res)
+    }).catch((error)=> {
+      console.log(error)
+    })
+  }
 
 
 /*getTrailInfo(event) {
@@ -230,7 +265,15 @@ class App extends Component {
           selectTrail={this.selectTrail}
           handleSubmit={this.handleSubmit}
           />
-        {/*<Review {this.state.trails}/> */}
+        <Review
+          handleReviewSubmit={this.handleReviewSubmit}
+          addAReview={this.addAReview}
+          handleReviewChange={this.handleReviewChange}
+          handleUserChange={this.handleUserChange}
+          deleteAnItem={this.deleteAnItem}
+          handleSubmit={this.handleSubmit}
+          />
+
           <div>{this.addAReview()}</div>
 
 
