@@ -6,7 +6,7 @@ import axios from 'axios';
 import Header from './components/Header';
 import TrailList from './components/TrailList';
 import AddATrail from './components/AddATrail';
-//import Review from './components/Review';
+import Review from './components/Review';
 import logo from './logo.svg';
 import './App.css';
 
@@ -158,12 +158,27 @@ class App extends Component {
       console.log(selectedTrail);
       content = (
         <div>
-          <h3>Enter a Review</h3>
-          <h5>{selectedTrail.trailName} {selectedTrail.location}</h5>
-          <form type="textarea" placeholder="Enter a Review">
-            <input type="textarea"/>
-            <input type="submit" value="Send it"/>
-          </form>
+            <h3>Enter a Review</h3>
+            <h5>{selectedTrail.trailName} {selectedTrail.location}</h5>
+
+            <form>
+              <div className="form-group">
+                {/* <label for="userName">User Name</label> */}
+                <input type="text" id="userName" name="username" className="form-control" placeholder="user name"/>
+              </div>
+             <div className="form-group">
+                {/*<label for="review">Review</label> */}
+                <textarea id="review" name="userReview" className="form-control" rows="3" placeholder="review"/>
+             </div>
+             <input type="submit" value="Send it"/>
+            </form>
+{/*            <h3>Enter a Review</h3>
+            <h5>{selectedTrail.trailName} {selectedTrail.location}</h5>
+            <form type="textarea" placeholder="Enter a Review">
+              <textarea type="textarea"/>
+              <input type="text" placeholder="Enter a Username"/>
+              <input type="submit" value="Send it"/>
+            </form>*/}
 
 
         </div>
@@ -173,38 +188,7 @@ class App extends Component {
   }
 
 
-  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  renderSelectedTodo() {
-    let content;
-
-    if (this.state.currentTodo) {
-      let currentTodo = this.state.todos[this.state.currentTodo];
-      if(!this.state.edit) {
-        content =  (
-          <div>
-            <div className="d-flex justify-content-end mb-3">
-              <button onClick={this.enableEditMode}>Edit</button>
-            </div>
-            <h1>{currentTodo.title}</h1>
-          </div>
-        );
-      } else {
-        content =  (
-          <div>
-            <div className="d-flex justify-content-end mb-3">
-              <button onClick={this.updateCurrentTodo}>Save</button>
-            </div>
-            <input className="w-100" defaultValue={currentTodo.title} ref="editTodoInput" />
-          </div>
-        );
-      }
-    }
-
-    return content;
-  }
-
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`*/
 
 /*getTrailInfo(event) {
   const id = event.target.id;
@@ -244,13 +228,15 @@ class App extends Component {
           deleteAnItem={this.deleteAnItem}
           addAReview={this.addAReview}
           selectTrail={this.selectTrail}
+          handleSubmit={this.handleSubmit}
           />
+        {/*<Review {this.state.trails}/> */}
           <div>{this.addAReview()}</div>
 
 
 
 
-          <button type="button" className="btn btn-danger">No Danger Here</button>
+        {/*  <button type="button" className="btn btn-danger">No Danger Here</button> */}
 
       </div>
     );

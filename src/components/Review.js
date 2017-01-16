@@ -7,7 +7,7 @@ class Review extends Component{
   render() {
     //console.log(this.props)
     return(
-      <h2>{this.props.selectedTrail}</h2>
+      <h2>{this.props.selectedTrail.trailName}</h2>
       )
   }
 }
