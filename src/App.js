@@ -32,6 +32,8 @@ class App extends Component {
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteAnItem = this.deleteAnItem.bind(this);
+    this.addAReview = this.addAReview.bind(this);
+    this.selectTrail = this.selectTrail.bind(this);
 
   }
 
@@ -140,6 +142,68 @@ class App extends Component {
         })
   }
 
+  selectTrail(itemId) {
+    this.setState( {selectedTrail: itemId} )
+    //console.log( this.selectTrail)
+    console.log(itemId);
+    console.log(this.state.selectedTrail)
+  }
+
+  addAReview() {
+    let content;
+
+    if(this.state.selectedTrail) {
+      //console.log(this.state.selectedTrail)
+      let selectedTrail = this.state.trails[this.state.selectedTrail];
+      console.log(selectedTrail);
+      content = (
+        <div>
+          <h3>Enter a Review</h3>
+          <form type="textarea" placeholder="Enter a Review">
+            <input type="textarea"/>
+            <input type="submit" value="Send it"/>
+          </form>
+
+
+        </div>
+        )
+    }
+    return content;
+  }
+
+
+  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  renderSelectedTodo() {
+    let content;
+
+    if (this.state.currentTodo) {
+      let currentTodo = this.state.todos[this.state.currentTodo];
+      if(!this.state.edit) {
+        content =  (
+          <div>
+            <div className="d-flex justify-content-end mb-3">
+              <button onClick={this.enableEditMode}>Edit</button>
+            </div>
+            <h1>{currentTodo.title}</h1>
+          </div>
+        );
+      } else {
+        content =  (
+          <div>
+            <div className="d-flex justify-content-end mb-3">
+              <button onClick={this.updateCurrentTodo}>Save</button>
+            </div>
+            <input className="w-100" defaultValue={currentTodo.title} ref="editTodoInput" />
+          </div>
+        );
+      }
+    }
+
+    return content;
+  }
+
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`*/
 
 /*getTrailInfo(event) {
   const id = event.target.id;
@@ -170,9 +234,17 @@ class App extends Component {
           inputLocation={this.state.trails.location}
           handleSubmit={this.handleSubmit}
 
+
           onClick={this.getTrailInfo}
           />
-         <TrailList  trailsArray={this.state.trailsArray} onClick={this.getTrailInfo} deleteAnItem={this.deleteAnItem}/>
+         <TrailList
+          trailsArray={this.state.trailsArray}
+          onClick={this.getTrailInfo}
+          deleteAnItem={this.deleteAnItem}
+          addAReview={this.addAReview}
+          selectTrail={this.selectTrail}
+          />
+          <div>{this.addAReview()}</div>
 
 
 
