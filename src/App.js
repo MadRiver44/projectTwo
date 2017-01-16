@@ -132,6 +132,7 @@ class App extends Component {
       //  console.log(trails);
         delete trails[itemId]
         this.setState( {trails} )
+        this.getRequest();
        // console.log(res)
       })
         .catch((error) => {

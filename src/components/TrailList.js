@@ -11,7 +11,7 @@ class TrailList extends Component {
       return (
 
           <li key={trail.key} onClick={this.props.getTrailInfo}>{trail.trailName} {trail.location}
-          <button onClick={() => {this.props.deleteAnItem(trail.key)}} />
+          <button onClick={() => {this.props.deleteAnItem(trail.key)}}>Delete</button>
           </li>
 
         )
