@@ -35,7 +35,9 @@ class App extends Component {
     this.addAReview = this.addAReview.bind(this);
     this.selectTrail = this.selectTrail.bind(this);
     this.handleUserChange =this.handleUserChange.bind(this);
+    this.handleReviewChange = this.handleReviewChange.bind(this);
     this.handleReviewSubmit = this.handleReviewSubmit.bind(this);
+    this.postReview = this.postReview.bind(this);
 
   }
 
@@ -100,7 +102,7 @@ class App extends Component {
     let newTrail = {
       trailName: this.state.trailName,
       location: this.state.location,
-      reviews: [{user: '',review:''} ],
+      reviews: [{user: '',review:''}] ,
     };
     //console.log(newTrail)
     //new
@@ -161,11 +163,12 @@ class App extends Component {
   }
 
   handleReviewChange(event) {
-    console.log(event)
+   // console.log(event)
     this.setState( {review: event.target.value} )
   }
 
   handleUserChange(event) {
+   // console.log(event)
     this.setState( {userName: event.target.value} )
   }
 
@@ -175,7 +178,7 @@ class App extends Component {
       //console.log(this.state.selectedTrail)
       let selectedTrail = this.state.trails[this.state.selectedTrail];
 
-      console.log(selectedTrail);
+      //console.log(selectedTrail);
       content = (
         <div>
             <h3>Enter a Review</h3>
@@ -190,7 +193,7 @@ class App extends Component {
                   placeholder="user name"/>
               </div>
              <div className="form-group">
-                <textarea onChange={this.handleReviewChange}
+                <input type="text" onChange={this.handleReviewChange}
                 value={this.state.review}
                 id="review" name="userReview"
                 className="form-control"
@@ -206,19 +209,30 @@ class App extends Component {
   }
 
   postReview() {
-    let review = {
+    console.log(this.state.review, this.state.userName)
+    let addReview = {
       review: this.state.review,
       userName: this.state.userName
     };
+    console.log(addReview)
+    let reviewArrayIndex = this.state.trails[this.state.selectedTrail].reviews.length;
+    //console
+    console.log(reviewArrayIndex)
     let key = this.state.selectedTrail;
+    console.log(key)
+
     axios({
-      url: `/${key}/reviews/json`,
+      url: `/trails/${key}/reviews/${reviewArrayIndex+ 1}/.json`,
       baseURL: 'https://ski-trail-review.firebaseio.com/',
-      data: review,
+      method:"POST",
+      data: addReview
     }).then((res) => {
+      //let trails = this.state.trails
+      //let reviews = reviews
+      //let newReviewId =
       //do something
 
-      console.log(res)
+      console.log(res.data.name)
     }).catch((error)=> {
       console.log(error)
     })
