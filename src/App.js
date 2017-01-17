@@ -25,7 +25,7 @@ class App extends Component {
       review: '',
       userName: '',
       trailsArray: [],
-      edit: true,
+      editedTrailName: ''
     }
 
 
@@ -40,6 +40,7 @@ class App extends Component {
     this.handleReviewChange = this.handleReviewChange.bind(this);
     this.handleReviewSubmit = this.handleReviewSubmit.bind(this);
     this.postReview = this.postReview.bind(this);
+    this.editTrail = this.editTrail.bind(this);
 
   }
 
@@ -134,10 +135,10 @@ class App extends Component {
       method: 'DELETE'
     })
       .then((res) => {
-        let trails = this.state.trails;
+        // let trails = this.state.trails;
       //  console.log(trails);
-        delete trails[itemId]
-        this.setState( {trails} )
+        // delete trails[itemId]
+        // this.setState( {trails} )
         this.getRequest();
        // console.log(res)
       })
@@ -241,21 +242,55 @@ class App extends Component {
     })
   }
 
-  editTrial(itemId) {
+
+
+  editTrail(itemId, data) {
+    //this.setState( {edit: true})
+    //this.renderTrailToEdit();
     let selectedTrail = this.state.trails[itemId];
-    let edits ={trailName: this.state.traillName, userName: this.state.userName}
+    //selectedTrail.location = this.refs.editTrailLocation.value
+    console.log(data);
     axios({
       url: `/trails/${itemId}.json`,
       baseURL: 'https://ski-trail-review.firebaseio.com/',
       method: 'PATCH',
-      data: edits
+      data: data
     }).then((res) => {
-      this.setState( {trails: this.state.trails, edit: false} )
+      // this.setState( {trails: this.state.trails, location: this.state.location ,edit: false} )
+      this.getRequest();
 
     }).catch((error) => {
         console.log(error)
     })
   }
+
+  renderTrailToEdit() {
+    let content;
+    let object = this.state.trails[this.state.selectedTrail]
+    if(object) {
+      console.log(object)
+
+      //let selectTrail = this.state.trails[this.state.selectedTrail]
+      if(!this.state.edit){
+        content = (
+            <div className="d-flex justify-content-end mb-3">
+            <h1>{object.trailName} </h1>
+          </div>
+        );
+      }else {
+        content = (
+          <div>
+            <div className="d-flex justify-content-end mb-3">
+              <button onClick={() => {this.editTrail}} >Save</button>
+            </div>
+            <input type="text" />
+            <input type="text" className="w-100" refs="editTrailName" />
+          </div>
+          )
+        }
+      }
+      return content;
+    }
 
 
 
@@ -275,8 +310,6 @@ class App extends Component {
           deleteAnItem={this.deleteAnItem}
           inputLocation={this.state.trails.location}
           handleSubmit={this.handleSubmit}
-
-
           onClick={this.getTrailInfo}
           />
          <TrailList
@@ -287,6 +320,8 @@ class App extends Component {
           selectTrail={this.selectTrail}
           handleSubmit={this.handleSubmit}
           editTrail={this.editTrail}
+          editedTrailName={this.state.editedTrailName}
+
           />
         <Review
           handleReviewSubmit={this.handleReviewSubmit}
@@ -304,6 +339,9 @@ class App extends Component {
 
 
 
+
+
+
         {/*  <button type="button" className="btn btn-danger">No Danger Here</button> */}
 
       </div>
@@ -312,7 +350,8 @@ class App extends Component {
 }
 
 export default App;
-
+//<div>{this.renderTrailToEdit()}</div>
+// <div>{this.renderTrailToEdit()}</div>
 
 //  <Review onClick={this.getTrailInfo} selectedTrail={this.state.selectedTrail} />
 //<div>{this.renderReviews()}</div>
