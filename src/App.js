@@ -7,6 +7,7 @@ import Header from './components/Header';
 import TrailList from './components/TrailList';
 import AddATrail from './components/AddATrail';
 import Review from './components/Review';
+import ReviewList from './components/ReviewList';
 import logo from './logo.svg';
 import './App.css';
 
@@ -220,9 +221,9 @@ class App extends Component {
     console.log(reviewArrayIndex)
     let key = this.state.selectedTrail;
     console.log(key)
-
+//${reviewArrayIndex+ 1}
     axios({
-      url: `/trails/${key}/reviews/${reviewArrayIndex+ 1}/.json`,
+      url: `/trails/${key}/reviews/.json`,
       baseURL: 'https://ski-trail-review.firebaseio.com/',
       method:"POST",
       data: addReview
@@ -239,17 +240,6 @@ class App extends Component {
   }
 
 
-/*getTrailInfo(event) {
-  const id = event.target.id;
-  //console.log(id)
-  const selectedTrail = this.state.trailList.filter((trail) => {
-    return trail.id === id;
-  })[0];
-  //console.log(selectedTrail)
-  this.setState( {selectedTrail: id} )
-  this.setState( {review: selectedTrail.review } )
-
-}*/
 
 
   render() {
@@ -287,8 +277,10 @@ class App extends Component {
           deleteAnItem={this.deleteAnItem}
           handleSubmit={this.handleSubmit}
           />
+          <ReviewList trailsArray={this.state.trails}/>
 
           <div>{this.addAReview()}</div>
+
 
 
 
@@ -304,4 +296,4 @@ export default App;
 
 
 //  <Review onClick={this.getTrailInfo} selectedTrail={this.state.selectedTrail} />
-
+//<div>{this.renderReviews()}</div>
