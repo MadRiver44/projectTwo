@@ -6,18 +6,39 @@ class ReviewList extends Component {
   }
 
   render() {
-    //  let reviewList = [];
-     // let reviewObject = this.props.trails[this.props.selectedTrail].reviews;
-    //  console.log(this.props);
+   // console.log(this.props.selectedTrail)
+      let uniqueTrail = this.props.selectedTrail;
+      let trailsArray = this.props.trailsArray
+
+        let filteredReviewList = Object.keys(trailsArray).filter((trail, i) => {
+          if(trail === uniqueTrail) {
+            return trail;
+          }
+        });
+        //console.log(filteredReviewList) // gets my specific trail id
+        //console.log(this.props); //trailsArray is an OBJECT, not Array
+        for (let id in trailsArray) {
+          if (id === uniqueTrail) {
+            let reviews = Object.keys(trailsArray[id].reviews).map((reviewItem ,i) => {
+              return (
+                <li key={reviewItem}> {reviewItem.review} {reviewItem.userName} </li>
+                  )
+                })
+
+            }
+          }
+
+
 
     return (
       null
+
       )
   }
 }
 
 export default ReviewList;
-
+//{/*<ul>{reviews}</ul> */}
 /*
         <div className="review-list">
           {reviewList}

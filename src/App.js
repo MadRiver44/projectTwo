@@ -24,14 +24,15 @@ class App extends Component {
       reviews:null,
       review: '',
       userName: '',
-      trailsArray: []
+      trailsArray: [],
+      edit: true,
     }
 
 
     // why bind? and what gets bound?
+    this.postRequest = this.postRequest.bind(this);
     this.handleTrailChange = this.handleTrailChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteAnItem = this.deleteAnItem.bind(this);
     this.addAReview = this.addAReview.bind(this);
     this.selectTrail = this.selectTrail.bind(this);
@@ -43,14 +44,10 @@ class App extends Component {
   }
 
 
-  handleSubmit(event) {
-    event.preventDefault();
-    this.postRequest();
-  }
+
 
   handleTrailChange(event) {
     this.setState( {trailName: event.target.value} )
-
   }
 
   handleLocationChange(event){
@@ -160,8 +157,7 @@ class App extends Component {
   handleReviewSubmit(event) {
     event.preventDefault();
     this.postReview()
-
-  }
+   }
 
   handleReviewChange(event) {
    // console.log(event)
@@ -189,13 +185,15 @@ class App extends Component {
               <div className="form-group">
                 <input type="text" onChange={this.handleUserChange}
                   value={this.state.userName}
+                  //ref={(input) => this.state.userName = input}
                   id="userName" name="username"
                   className="form-control"
                   placeholder="user name"/>
               </div>
              <div className="form-group">
-                <textarea type="text" onChange={this.handleReviewChange}
+                <input type="text" onChange={this.handleReviewChange}
                 value={this.state.review}
+               // ref={(input) => this.state.review = input}
                 id="review" name="userReview"
                 className="form-control"
                 rows="3"
@@ -228,6 +226,10 @@ class App extends Component {
       method:"POST",
       data: addReview
     }).then((res) => {
+      this.setState({
+        userName: "",
+        review: ""
+      })
       //let trails = this.state.trails
       //let reviews = reviews
       //let newReviewId =
@@ -239,6 +241,21 @@ class App extends Component {
     })
   }
 
+  editTrial(itemId) {
+    let selectedTrail = this.state.trails[itemId];
+    let edits ={trailName: this.state.traillName, userName: this.state.userName}
+    axios({
+      url: `/trails/${itemId}.json`,
+      baseURL: 'https://ski-trail-review.firebaseio.com/',
+      method: 'PATCH',
+      data: edits
+    }).then((res) => {
+      this.setState( {trails: this.state.trails, edit: false} )
+
+    }).catch((error) => {
+        console.log(error)
+    })
+  }
 
 
 
@@ -251,6 +268,7 @@ class App extends Component {
         </div>
         <Header />
         <AddATrail
+          postRequest={this.postRequest}
           inputTrialName={this.state.trailName}
           handleTrailChange={this.handleTrailChange}
           handleLocationChange={this.handleLocationChange}
@@ -268,6 +286,7 @@ class App extends Component {
           addAReview={this.addAReview}
           selectTrail={this.selectTrail}
           handleSubmit={this.handleSubmit}
+          editTrail={this.editTrail}
           />
         <Review
           handleReviewSubmit={this.handleReviewSubmit}
@@ -277,7 +296,7 @@ class App extends Component {
           deleteAnItem={this.deleteAnItem}
           handleSubmit={this.handleSubmit}
           />
-          <ReviewList trailsArray={this.state.trails}/>
+          <ReviewList trailsArray={this.state.trails} selectedTrail={this.state.selectedTrail} />
 
           <div>{this.addAReview()}</div>
 
