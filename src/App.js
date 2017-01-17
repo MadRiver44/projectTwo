@@ -21,7 +21,7 @@ class App extends Component {
       description: '',
       location: '',
       selectedTrail: '',
-      reviews:[],
+      reviews:null,
       review: '',
       userName: '',
       trailsArray: []
@@ -103,7 +103,7 @@ class App extends Component {
     let newTrail = {
       trailName: this.state.trailName,
       location: this.state.location,
-      reviews: [{user: '',review:''}] ,
+      /*reviews: {user: '',review:''}  dont need to pass this in to enter a new trail*/
     };
     //console.log(newTrail)
     //new
@@ -159,7 +159,7 @@ class App extends Component {
 
   handleReviewSubmit(event) {
     event.preventDefault();
-    this.postReview();
+    this.postReview()
 
   }
 
@@ -194,14 +194,14 @@ class App extends Component {
                   placeholder="user name"/>
               </div>
              <div className="form-group">
-                <input type="text" onChange={this.handleReviewChange}
+                <textarea type="text" onChange={this.handleReviewChange}
                 value={this.state.review}
                 id="review" name="userReview"
                 className="form-control"
                 rows="3"
                 placeholder="review"/>
              </div>
-             <input type="submit" onClick={this.postReview} value="Send it"/>
+             <input type="submit"  value="Send it"/>
             </form>
          </div>
         )
@@ -216,9 +216,9 @@ class App extends Component {
       userName: this.state.userName
     };
     console.log(addReview)
-    let reviewArrayIndex = this.state.trails[this.state.selectedTrail].reviews.length;
+    //let reviewArrayIndex = this.state.trails[this.state.selectedTrail].reviews.length;
     //console
-    console.log(reviewArrayIndex)
+   // console.log(reviewArrayIndex)
     let key = this.state.selectedTrail;
     console.log(key)
 //${reviewArrayIndex+ 1}

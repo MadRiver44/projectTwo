@@ -6,9 +6,9 @@ class ReviewList extends Component {
   }
 
   render() {
-      let reviewList = [];
-      let reviewObject = this.props.trails[this.props.selectedTrail].reviews;
-      console.log(this.props);
+    //  let reviewList = [];
+     // let reviewObject = this.props.trails[this.props.selectedTrail].reviews;
+    //  console.log(this.props);
 
     return (
       null
