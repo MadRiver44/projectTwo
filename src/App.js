@@ -27,9 +27,6 @@ class App extends Component {
       trailsArray: [],
       editedTrailName: ''
     }
-
-
-    // why bind? and what gets bound?
     this.postRequest = this.postRequest.bind(this);
     this.handleTrailChange = this.handleTrailChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
@@ -55,7 +52,7 @@ class App extends Component {
     this.setState( {location: event.target.value} )
   }
 
-  componentDidMount() { // on page load render all trails
+  componentDidMount() {
     this.getRequest();
   };
 
@@ -66,15 +63,12 @@ class App extends Component {
       method: "GET"
   }).then((res) => {
       this.setState( {trails: res.data} )
-      // console.log(res.data); // data property Object {FbkeyId :{reviews:[{user:'',review:''}], location: '', trailName: ''}
+     // data property Object {FbkeyId :{reviews:[{user:'',review:''}], location: '', trailName: ''}
       const trailsData = res.data;
       this.setState( {trails: res.data} )
-      // console.log( this.state.trails );
       let trails = [];
         trails = Object.keys(trailsData).map((id) => {
           const trail = trailsData[id];
-          //console.log(id)
-          //console.log(trail)
           return {
             trailName: trail.trailName,
             location: trail.location,
@@ -84,10 +78,8 @@ class App extends Component {
 
       });
 
-        //console.log(trails);
         trails.reverse()
         this.setState( {trailsArray: trails} );
-        //console.log(this.state.trailsArray)
 
     }).catch((error) => {
     console.log(error);
@@ -97,15 +89,11 @@ class App extends Component {
 
 
   postRequest() {
-    // new
     let newTrail = {
       trailName: this.state.trailName,
-      location: this.state.location,
-      /*reviews: {user: '',review:''}  dont need to pass this in to enter a new trail*/
-    };
-    //console.log(newTrail)
-    //new
+      location: this.state.location
 
+    };
     axios({
       url:'/trails.json',
       baseURL: 'https://ski-trail-review.firebaseio.com/',
@@ -116,7 +104,6 @@ class App extends Component {
       let trails = this.state.trails;
       let newTrail_Id = res.data.name;
       trails[newTrail_Id] = newTrail;
-      //console.log(newTrail_Id)
       this.setState( {trails: trails});
       this.getRequest()
     })
@@ -135,12 +122,7 @@ class App extends Component {
       method: 'DELETE'
     })
       .then((res) => {
-        // let trails = this.state.trails;
-      //  console.log(trails);
-        // delete trails[itemId]
-        // this.setState( {trails} )
         this.getRequest();
-       // console.log(res)
       })
         .catch((error) => {
           console.log(error);
@@ -149,9 +131,6 @@ class App extends Component {
 
   selectTrail(itemId) {
     this.setState( {selectedTrail: itemId} )
-    //console.log( this.selectTrail)
-    //console.log(itemId);
-    //console.log(this.state.selectedTrail)
     return this.state.selectedTrail;
   }
 
@@ -161,22 +140,17 @@ class App extends Component {
    }
 
   handleReviewChange(event) {
-   // console.log(event)
     this.setState( {review: event.target.value} )
   }
 
   handleUserChange(event) {
-   // console.log(event)
     this.setState( {userName: event.target.value} )
   }
 
   addAReview() {
     let content;
     if(this.state.selectedTrail) {
-      //console.log(this.state.selectedTrail)
       let selectedTrail = this.state.trails[this.state.selectedTrail];
-
-      //console.log(selectedTrail);
       content = (
         <div>
             <h3>Enter a Review</h3>
@@ -186,7 +160,6 @@ class App extends Component {
               <div className="form-group">
                 <input type="text" onChange={this.handleUserChange}
                   value={this.state.userName}
-                  //ref={(input) => this.state.userName = input}
                   id="userName" name="username"
                   className="form-control"
                   placeholder="user name"/>
@@ -194,7 +167,6 @@ class App extends Component {
              <div className="form-group">
                 <input type="text" onChange={this.handleReviewChange}
                 value={this.state.review}
-               // ref={(input) => this.state.review = input}
                 id="review" name="userReview"
                 className="form-control"
                 rows="3"
@@ -209,18 +181,11 @@ class App extends Component {
   }
 
   postReview() {
-    console.log(this.state.review, this.state.userName)
     let addReview = {
       review: this.state.review,
       userName: this.state.userName
     };
-    console.log(addReview)
-    //let reviewArrayIndex = this.state.trails[this.state.selectedTrail].reviews.length;
-    //console
-   // console.log(reviewArrayIndex)
     let key = this.state.selectedTrail;
-    console.log(key)
-//${reviewArrayIndex+ 1}
     axios({
       url: `/trails/${key}/reviews/.json`,
       baseURL: 'https://ski-trail-review.firebaseio.com/',
@@ -231,12 +196,6 @@ class App extends Component {
         userName: "",
         review: ""
       })
-      //let trails = this.state.trails
-      //let reviews = reviews
-      //let newReviewId =
-      //do something
-
-      console.log(res.data.name)
     }).catch((error)=> {
       console.log(error)
     })
@@ -245,18 +204,13 @@ class App extends Component {
 
 
   editTrail(itemId, data) {
-    //this.setState( {edit: true})
-    //this.renderTrailToEdit();
     let selectedTrail = this.state.trails[itemId];
-    //selectedTrail.location = this.refs.editTrailLocation.value
-    console.log(data);
     axios({
       url: `/trails/${itemId}.json`,
       baseURL: 'https://ski-trail-review.firebaseio.com/',
       method: 'PATCH',
       data: data
     }).then((res) => {
-      // this.setState( {trails: this.state.trails, location: this.state.location ,edit: false} )
       this.getRequest();
 
     }).catch((error) => {
@@ -268,9 +222,6 @@ class App extends Component {
     let content;
     let object = this.state.trails[this.state.selectedTrail]
     if(object) {
-      console.log(object)
-
-      //let selectTrail = this.state.trails[this.state.selectedTrail]
       if(!this.state.edit){
         content = (
             <div className="d-flex justify-content-end mb-3">
@@ -323,26 +274,10 @@ class App extends Component {
           editedTrailName={this.state.editedTrailName}
 
           />
-        <Review
-          handleReviewSubmit={this.handleReviewSubmit}
-          addAReview={this.addAReview}
-          handleReviewChange={this.handleReviewChange}
-          handleUserChange={this.handleUserChange}
-          deleteAnItem={this.deleteAnItem}
-          handleSubmit={this.handleSubmit}
-          />
-          <ReviewList trailsArray={this.state.trails} selectedTrail={this.state.selectedTrail} />
 
           <div>{this.addAReview()}</div>
 
 
-
-
-
-
-
-
-        {/*  <button type="button" className="btn btn-danger">No Danger Here</button> */}
 
       </div>
     );
@@ -350,8 +285,3 @@ class App extends Component {
 }
 
 export default App;
-//<div>{this.renderTrailToEdit()}</div>
-// <div>{this.renderTrailToEdit()}</div>
-
-//  <Review onClick={this.getTrailInfo} selectedTrail={this.state.selectedTrail} />
-//<div>{this.renderReviews()}</div>

@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 class Header extends Component{
   render(){
     return (
-      <h1 className="header"> Select a Trail</h1>
+      <h1 className="header bootstrap-heading"> Select a Trail</h1>
       )
   }
 }

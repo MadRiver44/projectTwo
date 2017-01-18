@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 
 class AddATrail extends Component{
-/*  constructor(props){
-    super(props);
 
-  }*/
     handleSubmit(event) {
     event.preventDefault();
     this.props.postRequest();

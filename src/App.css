@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  font-size: large;
+  font-family: 'Merriweather', serif;
 }
 
 .App-logo {
@@ -25,4 +27,24 @@
 
 .delete {
   margin-left: 10px;
+}
+
+.header {
+
+}
+
+.btn {
+  padding: 15px;
+  margin-left: 15px;
+
+}
+
+ul {
+  list-style-type: none;
+}
+
+
+.btn-danger{
+  margin-left: 40px;
+
 }
