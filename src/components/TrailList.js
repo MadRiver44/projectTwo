@@ -31,12 +31,12 @@ class TrailList extends Component {
 
           type="text"
           ref={(input) => this.trailName = input}
-          defaultValue={trail.trailName} />
+           />
         <input
 
           type="text"
           ref={(input) => this.location = input}
-          defaultValue={trail.location} />
+          />
           <button className="edit btn btn-danger" data-trail-key={trail.key} onClick={this.handleClick}>Save</button>
           <button className="review btn btn-success" onClick={() => {this.setState( {edit: false} )}}>Cancel</button>
         </div>
@@ -84,3 +84,5 @@ class TrailList extends Component {
 
 export default TrailList;
 
+//defaultValue={trail.trailName}
+//defaultValue={trail.location}

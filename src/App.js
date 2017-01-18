@@ -216,39 +216,13 @@ class App extends Component {
     })
   }
 
-  renderTrailToEdit() {
-    let content;
-    let object = this.state.trails[this.state.selectedTrail]
-    if(object) {
-      if(!this.state.edit){
-        content = (
-            <div className="d-flex justify-content-end mb-3">
-            <h1>{object.trailName} </h1>
-          </div>
-        );
-      }else {
-        content = (
-          <div>
-            <div className="d-flex justify-content-end mb-3">
-              <button onClick={() => {this.editTrail}} >Save</button>
-            </div>
-            <input type="text" />
-            <input type="text" className="w-100" refs="editTrailName" />
-          </div>
-          )
-        }
-      }
-      return content;
-    }
-
-
 
   render() {
     return (
       <div className="App">
-        <div className="App-header">
+{/*        <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-        </div>
+        </div>*/}
         <Header />
         <AddATrail
           postRequest={this.postRequest}
