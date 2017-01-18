@@ -7,7 +7,7 @@ class ReviewList extends Component {
 
   render() {
    // console.log(this.props.selectedTrail)
-      let uniqueTrail = this.props.selectedTrail;
+/*      let uniqueTrail = this.props.selectedTrail;
       let trailsArray = this.props.trailsArray
 
         let filteredReviewList = Object.keys(trailsArray).filter((trail, i) => {
@@ -27,7 +27,7 @@ class ReviewList extends Component {
 
             }
           }
-
+*/
 
 
     return (
